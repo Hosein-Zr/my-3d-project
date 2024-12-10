@@ -1,22 +1,19 @@
-"use client"
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import MyBlenderModel from '../components/MyBlenderModel';
+"use client";
+import React from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import MyBlenderModel from "../components/MyBlenderModel";
+import Cube from "../components/Cube";
+import RotatingCube from "../components/Cube";
 
 const MyParentComponent: React.FC = () => {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <Canvas camera={{ position: [5, 5, 5], fov: 50 }}>
-        {/* Lighting */}
+    <div className=" h-screen w-screen bg-green-100">
+      <Canvas shadows camera={{ position: [5, 5, 5], fov: 60 }} dpr={[1, 2]}>
         <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} intensity={1} />
+        <directionalLight position={[2, 2, 5]} intensity={1} />
 
-        {/* Blender Model */}
-        <MyBlenderModel position={[0, 0, 0]} scale={1} />
-
-        {/* Orbit Controls */}
-        <OrbitControls />
+       {/* <RotatingCube /> */}
       </Canvas>
     </div>
   );
