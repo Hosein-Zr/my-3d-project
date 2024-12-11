@@ -3,7 +3,7 @@ import React from 'react'
 function Mammad() {
   return (
     <div>
-      Hello Mammad!
+      Hello!
     </div>
   )
 }
