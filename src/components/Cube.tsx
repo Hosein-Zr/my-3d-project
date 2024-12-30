@@ -1,4 +1,4 @@
-import { Canvas } from '@react-three/fiber';
+// import { Canvas } from '@react-three/fiber';
 import { useState } from 'react';
 import { Html } from '@react-three/drei';
 
