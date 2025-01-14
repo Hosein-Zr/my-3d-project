@@ -1,21 +1,28 @@
-import React, { useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+"use client"
+import { useFrame } from "@react-three/fiber"
+import { useRef, useState } from "react"
 
-const Cube = ({ onFaceClick }) => {
-  const cubeRef = useRef();
-
-  const handlePointerDown = (e) => {
-    const faceIndex = e.faceIndex; // Get the face index.
-    onFaceClick(faceIndex); // Call parent function with faceIndex.
-  };
-
+function Box(props) {
+  // This reference will give us direct access to the mesh
+  const meshRef = useRef()
+  // Set up state for the hovered and active state
+  const [hovered, setHover] = useState(false)
+  const [active, setActive] = useState(false)
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  useFrame((state, delta) => (meshRef.current.rotation.x += delta))
+  // Return view, these are regular three.js elements expressed in JSX
   return (
-    <mesh ref={cubeRef} onPointerDown={handlePointerDown}>
-      <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial color="orange" />
+    <mesh
+      {...props}
+      ref={meshRef}
+      scale={active ? 1.5 : 1}
+      onClick={() => setActive(!active)}
+      onPointerOver={() => setHover(true)}
+      onPointerOut={() => setHover(false)}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
     </mesh>
-  );
-};
+  )
+}
 
-export default Cube;
+export default Box
