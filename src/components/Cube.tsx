@@ -1,28 +1,36 @@
-'use client'
-import React from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Canvas } from '@react-three/fiber';
+import { useState } from 'react';
+import { useSpring, a } from '@react-spring/three';
+import { Text } from '@react-three/drei';
 
-const Cube: React.FC = () => {
-  // Ref for the mesh to apply animations
-  const meshRef = React.useRef<THREE.Mesh>(null);
+const HoverBox = () => {
+  const [hovered, setHovered] = useState(false);
 
-  // Rotate the cube every frame
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.01;
-    }
+  // Animation for the text
+  const springProps = useSpring({
+    scale: hovered ? [1, 1, 1] : [0, 0, 0],
+    opacity: hovered ? 1 : 0,
+    config: { tension: 200, friction: 20 },
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      {/* Box Geometry for the Cube */}
-      <boxGeometry args={[1, 1, 1]} />
-      {/* Mesh Material */}
-      <meshStandardMaterial color="orange" />
-    </mesh>
+    <>
+      <mesh
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        position={[0, 0, 0]}
+      >
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={hovered ? 'orange' : 'blue'} />
+      </mesh>
+      <a.group position={[0, 1.5, 0]} scale={springProps.scale}>
+        <Text color="white" fontSize={0.5}>
+          Hovered!
+        </Text>
+      </a.group>
+    </>
   );
 };
 
-export default Cube;
+
+export default HoverBox;
