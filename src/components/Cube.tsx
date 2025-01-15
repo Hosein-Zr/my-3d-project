@@ -1,36 +1,28 @@
-import { Canvas } from '@react-three/fiber';
-import { useState } from 'react';
-import { useSpring, a } from '@react-spring/three';
-import { Text } from '@react-three/drei';
+"use client"
+import { useFrame } from "@react-three/fiber"
+import { useRef, useState } from "react"
 
-const HoverBox = () => {
-  const [hovered, setHovered] = useState(false);
-
-  // Animation for the text
-  const springProps = useSpring({
-    scale: hovered ? [1, 1, 1] : [0, 0, 0],
-    opacity: hovered ? 1 : 0,
-    config: { tension: 200, friction: 20 },
-  });
-
+function Box(props) {
+  // This reference will give us direct access to the mesh
+  const meshRef = useRef()
+  // Set up state for the hovered and active state
+  const [hovered, setHover] = useState(false)
+  const [active, setActive] = useState(false)
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  useFrame((state, delta) => (meshRef.current.rotation.x += delta))
+  // Return view, these are regular three.js elements expressed in JSX
   return (
-    <>
-      <mesh
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        position={[0, 0, 0]}
-      >
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? 'orange' : 'blue'} />
-      </mesh>
-      <a.group position={[0, 1.5, 0]} scale={springProps.scale}>
-        <Text color="white" fontSize={0.5}>
-          Hovered!
-        </Text>
-      </a.group>
-    </>
-  );
-};
+    <mesh
+      {...props}
+      ref={meshRef}
+      scale={active ? 1.5 : 1}
+      onClick={() => setActive(!active)}
+      onPointerOver={() => setHover(true)}
+      onPointerOut={() => setHover(false)}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+    </mesh>
+  )
+}
 
-
-export default HoverBox;
+export default Box
