@@ -27,7 +27,7 @@ const MyBlenderModel: React.FC<ModelProps> = ({
     const logObjectTypes = (node: THREE.Object3D) => {
       // Log the type and name of each object
       if (node.type === "Group" && node.name === "computer")
-        console.log(`Object Name: ${node.name}, Type: ${node.type}`);
+        // console.log(`Object Name: ${node.name}, Type: ${node.type}`);
 
       // Recursively log all child objects (whether groups, meshes, or other objects)
       node.children.forEach(logObjectTypes);
@@ -38,11 +38,11 @@ const MyBlenderModel: React.FC<ModelProps> = ({
   }, [scene]);
   const handleClick = (event) => {
     let currentObject = event.object; // Start with the clicked object
-  
+  // console.log(" this is it",currentObject)
     // Traverse up the parent hierarchy until a group with a name is found
     while (currentObject.parent) {
       if (currentObject.parent.name) {
-        console.log(`You clicked on the group: ${currentObject.parent.name}`);
+        // console.log(`You clicked on the group: ${currentObject.parent.name}`);
         if(currentObject.parent.name === "lightLamp"){
           setIsLightOn(!isLightOn)
           // Fallback: if no named group is found, log the object's name
@@ -52,7 +52,7 @@ const MyBlenderModel: React.FC<ModelProps> = ({
       currentObject = currentObject.parent; // Move to the parent object
     }
   
-    console.log(`You clicked on: ${event.object.name}`);
+    // console.log(`You clicked on: ${event.object.name}`);
   };
   return (
     <mesh

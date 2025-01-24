@@ -1,22 +1,26 @@
-import { useFrame } from '@react-three/fiber';
-import { useSpring, animated } from '@react-spring/three';
-import { useRef } from 'react';
+"use client"
 
-const CameraController = ({ targetPosition, targetLookAt }) => {
-  const cameraRef = useRef();
+import { useFrame } from "@react-three/fiber";
+import { useRef, useState } from "react";
 
-  const { position } = useSpring({
-    position: targetPosition,
-    config: { mass: 1, tension: 120, friction: 30 },
-  });
+const ColorChangingCube = () => {
+  const [color, setColor] = useState('red');
+  const cubeRef = useRef();
 
-  useFrame(({ camera }) => {
-    if (cameraRef.current) {
-      camera.position.lerp(position, 0.1); // Smoothly move camera.
-      camera.lookAt(...targetLookAt); // Ensure the camera looks at the cube.
+  useFrame(() => {
+    if (cubeRef.current) {
+      const time = Date.now() * 0.001;
+      const newColor = `hsl(${(time % 360)}, 100%, 50%)`;
+      setColor(newColor);
+      cubeRef.current.material.color.set(newColor);
     }
   });
 
-  return null;
+  return (
+    <mesh ref={cubeRef}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial />
+    </mesh>
+  );
 };
-export default CameraController
+export default ColorChangingCube
